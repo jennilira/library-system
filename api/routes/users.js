@@ -14,6 +14,7 @@ import {
 } from "../controllers/admin.js";
 import { addCatego, deleteCatego, getCatego, updateCatego } from "../controllers/categoriaLivro.js";
 import { addLivros, deleteLivros, getLivros, updateLivros } from "../controllers/livros.js";
+import { getTurmas } from "../controllers/Turma.js";
 const router = express.Router();
 
 router.get("/getadm", getAdmin);
@@ -56,7 +57,8 @@ router.put("/livros/:id", updateLivros);
 router.delete("/livros/:id", deleteLivros);
 
 
-
+//turmas
+router.get("/turmas", getTurmas);
 
 
 //aqui estao todas as rotas 

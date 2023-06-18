@@ -102,19 +102,35 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   // setOnEditLivros={setOnEditLivros}
   // getLivros={getLivros}
 
+  // useEffect(() => {
+  //   const getCategorias = async () => {
+  //     try {
+  //       const res = await axios.get("http://localhost:8800/getsala");
+  //       setOptions(res?.data?.sort((a, b) => (a.name > b.name ? 1 : -1)));
+  //     } catch (error) {
+  //       // toast.error(error);
+  //     }
+  //   };
+  //   getCategorias();
+  // }, []);
+  //
+
+  const [turmaData, setTurmaData] = useState([]);
+  const [erros, setEroos] = useState("");
   useEffect(() => {
-    const getCategorias = async () => {
+    const getTurmas = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/getsala");
-        setOptions(res?.data?.sort((a, b) => (a.name > b.name ? 1 : -1)));
+        const res = await axios.get("http://localhost:8800/turmas");
+        // setTurmaData([])
+        setTurmaData(res?.data?.sort((a, b) => (a.name > b.name ? 1 : -1)));
+        console.log(turmaData);
       } catch (error) {
         // toast.error(error);
+        // setEroos(res)
       }
     };
-    getCategorias();
+    getTurmas();
   }, []);
-
-  //us
 
   const [livros, setLivros] = useState([]);
 
@@ -124,6 +140,7 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
       try {
         const res = await axios.get("http://localhost:8800/getlivros");
         setLivros(res?.data?.sort((a, b) => (a.name > b.name ? 1 : -1)));
+        console.log(livros);
       } catch (error) {
         // toast.error(error);
       }
@@ -139,14 +156,6 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   useEffect(() => {
     if (onEditLivros) {
       const livro = ref.current;
-
-      //   livro.name.value = onEditLivros.name;
-      //   livro.ano_de_lancamento.value = onEditLivros.ano_de_lancamento;
-      //   livro.quan_copias.value = onEditLivros.quan_copias;
-      //   livro.editora.value = onEditLivros.editora;
-      //   livro.id_categoria.value = onEditLivros.id_categoria;
-      //um filter onde filtrar a sala e serie  ao mesmo tempo e aparece o aluno .....
-      //
     }
   }, [onEditLivros]);
 
@@ -202,11 +211,22 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   const [inputSearch, setInputSearch] = useState("");
   const [modalSearch, setModalSearch] = useState(false);
 
+  const [selectedTurma, setSelectedTurma] = useState("");
+  const [filteredAlunoData, setFilteredAlunoData] = useState([]);
+
   const searchLivros = useMemo(() => {
     return livros?.filter((livro, i) => {
       return livro?.name?.toLowerCase()?.includes(inputSearch?.toLowerCase());
     });
   }, [livros, inputSearch]);
+
+  const handleFilter = () => {
+    // Filtra os alunos com base na turma selecionada
+    const filtered = turmaData.filter(
+      (item) => item.turma_id === selectedTurma
+    );
+    setFilteredAlunoData(filtered);
+  };
 
   return (
     // eslint-disable-next-line react/style-prop-object
@@ -252,13 +272,29 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
             <Label> data prazo </Label>
             <Input type="date" name="data_prazo" />
           </InputArea>
-
           <InputArea>
             <Label> Turma </Label>
-            <Input name="turma" />
+            <select
+              value={selectedTurma}
+              onChange={(e) => setSelectedTurma(e.target.value)}
+            >
+              <option value="">Selecione uma turma</option>
+              {turmaData?.map((turma) => (
+                <option key={turma?.turma_id} value={turma?.turma_idCurso}>
+                  {console.log(turma)}
+                  {turma?.turma_nome} - {turma?.turma_serie}
+                </option>
+              ))}
+            </select>
+            {/* <button onClick={handleFilter}>Filtrar</button> */}
+
+            <ul>
+              {filteredAlunoData.map((aluno) => (
+                <li key={aluno.id_aluno}>{aluno.nome_aluno}</li>
+              ))}
+            </ul>
           </InputArea>
 
-         
           <InputArea>
             <Label> nome </Label>
             <Input for="for" type="text" name="nome_aluno" />
@@ -283,3 +319,4 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
 
 //bem preciso  um filter
 export default CadastrarLivros;
+//filtro de aluno == turma selecionada
