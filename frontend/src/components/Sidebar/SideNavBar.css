@@ -1,0 +1,331 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+
+* {
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+}
+
+.nav-menu {
+  /* margin-top: 2rem; */
+  text-align: center;
+  cursor: pointer;
+}
+
+p {
+  margin: 5px;
+}
+
+.margin-top {
+  margin-top: 40px;
+}
+.logo {
+  height: 100px;
+  cursor: pointer;
+  cursor: pointer;
+}
+
+Link:hover {
+  text-decoration: none;
+  color: antiquewhite;
+
+  cursor: pointer;
+}
+.icons {
+  font-size: 1.5rem;
+
+  /* font-size:1.7rem ; */
+  text-align: center;
+  display: flex;
+
+  cursor: pointer;
+}
+svg.icons {
+  align-items: center;
+  cursor: pointer;
+}
+/* .menu-item{
+
+}
+
+
+
+
+.nav-menu.active {
+  left: 0;
+  transition: 350ms;
+}
+
+*/
+
+.nav-upper {
+  box-shadow: 39px 12px 74px -1px rgba(214, 214, 214, 0.7);
+
+  top: 0;
+  position: fixed;
+  z-index: 999;
+  /* z index é imprtante  */
+  display: flex;
+  justify-content: center;
+
+  cursor: pointer;
+  height: 100vh;
+  width: 205px;
+  /* height: 100%; */
+
+  background-color: rgb(252, 255, 253);
+}
+
+.nav-uppere {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-fixed);
+  transition: 0.7s;
+  /* color: var(--light); */
+  cursor: pointer;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+
+  background-color: var(--main);
+
+  /* box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.3); */
+}
+.menu-item {
+  display: flex;
+
+  text-decoration: none;
+  /* text-transform: uppercase; */
+  cursor: pointer;
+
+  padding: 0.3rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: rgb(107, 107, 107);
+}
+
+p {
+}
+
+a.menu-item {
+  align-content: center;
+  display: flex;
+  margin: 0.5rem;
+  cursor: pointer;
+}
+.menu-item:hover {
+  color: rgb(82, 82, 82);
+}
+.menu-item-NX {
+  flex-wrap: nowrap;
+
+  padding: 1.35rem 1.5rem;
+  color: var(--light);
+}
+.menu-item-NX:hover {
+  color: var(--light);
+}
+
+/* .menu-item-down{
+
+  padding-top: 40rem;
+  
+} */
+
+.nav-footer {
+}
+
+.menu-item-footer {
+  display: flex;
+  color: var(--light);
+  text-decoration: none;
+  /* text-transform: uppercase; */
+
+  /* padding: 0.25rem 1.5rem; */
+}
+
+.container-nav {
+}
+.nav-menu {
+  /*     
+  flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem; */
+}
+
+.nav-brand {
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 26px;
+  text-align: center;
+  color: var(--light);
+  cursor: pointer;
+}
+
+.hamburger-out {
+}
+.hamburger-in {
+  /* margin-left: 10.7rem; */
+  margin-left: 10.7rem;
+}
+
+.butao {
+  /* top: 0;
+  background: none;
+	border: none;
+	cursor: pointer;
+	
+  color: var(--light); */
+
+  justify-content: center;
+  display: flex;
+}
+
+/* .footer-nav{
+  background-color: #262657;
+  position: relative;
+  min-height: 150px;
+  width: 100px;
+ 
+} */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+@media screen and (min-width: 1024px) {
+  :root {
+    --normal-font-size: 1rem;
+    --small-font-size: 0.875rem;
+    --smaller-font-size: 0.813rem;
+  }
+}
+
+h3 {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/*========== NAV ==========*/
+
+.menu-item:hover {
+}
+
+.nav__container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 3rem;
+  overflow: auto;
+  scrollbar-width: none; /* For mozilla */
+}
+
+/* For Google Chrome and others */
+/* .nav__container::-webkit-scrollbar {
+  display: none;
+}
+
+.nav__logo {
+  font-weight: var(--font-semi-bold);
+  margin-bottom: 2.5rem;
+}
+
+.nav__list, 
+.nav__items {
+  display: grid;
+}
+
+.nav__list {
+  row-gap: 2.5rem;
+}
+
+.nav__items {
+  row-gap: 1.5rem;
+}
+
+.nav__subtitle {
+  font-size: var(--normal-font-size);
+  text-transform: uppercase;
+  letter-spacing: .1rem;
+  color: var(--text-color-light);
+}
+
+.nav__link {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+}
+
+.nav__link:hover {
+  color: var(--first-color);
+}
+
+.nav__icon {
+  font-size: 1.2rem;
+  margin-right: .5rem;
+}
+
+.nav__name {
+  font-size: var(--small-font-size);
+  font-weight: var(--font-medium);
+  white-space: nowrap;
+}
+
+.nav__logout {
+  margin-top: 5rem;
+}
+
+/* Dropdown */
+.nav__dropdown {
+  overflow: hidden;
+  max-height: 21px;
+  transition: 0.4s ease-in-out;
+}
+
+.nav__dropdown-collapse {
+  background-color: var(--first-color-light);
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}
+
+/* Rotate icon arrow */
+/* .nav__dropdown:hover .nav__dropdown-icon {
+  transform: rotate(180deg);
+} */
+
+/*===== Show menu =====*/
+.show-menu {
+  left: 0;
+}
+*/
+
+/*===== Active link =====*/
+.active {
+  color: var(--first-color);
+}
