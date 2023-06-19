@@ -220,12 +220,16 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
     });
   }, [livros, inputSearch]);
 
-  const handleFilter = () => {
+  
+
+  const handleTurmaChange = (e) => {
+    const turmaSelecionada = e.target.value;
+
     // Filtra os alunos com base na turma selecionada
-    const filtered = turmaData.filter(
-      (item) => item.turma_id === selectedTurma
-    );
+    const filtered = turmaData.filter(item => item.turma_id === turmaSelecionada);
     setFilteredAlunoData(filtered);
+
+    setSelectedTurma(turmaSelecionada); // Atualiza a turma selecionada no estado
   };
 
   return (
@@ -276,7 +280,7 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
             <Label> Turma </Label>
             <select
               value={selectedTurma}
-              onChange={(e) => setSelectedTurma(e.target.value)}
+              onChange={handleTurmaChange}
             >
               <option value="">Selecione uma turma</option>
               {turmaData?.map((turma) => (
@@ -289,10 +293,10 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
             {/* <button onClick={handleFilter}>Filtrar</button> */}
 
             <ul>
-              {filteredAlunoData.map((aluno) => (
-                <li key={aluno.id_aluno}>{aluno.nome_aluno}</li>
-              ))}
-            </ul>
+        {filteredAlunoData.map(aluno => (
+          <li key={aluno.id_aluno}>{aluno.nome_aluno}</li>
+        ))}
+      </ul>
           </InputArea>
 
           <InputArea>
