@@ -15,6 +15,13 @@ app.use("/addLivros", userRoutes)
 app.use("/catego", userRoutes)
 app.use("/livros", userRoutes)
 app.use("/turmas", userRoutes)
+app.use("/alunos", userRoutes)
+app.use("/getalunos", userRoutes)
+app.use("/getemprestimo", userRoutes)
+app.use("/getcolecao", userRoutes)
+app.use("/colecao", userRoutes)
+app.use("/putLivroEColecao", userRoutes)
+app.use("/getLivroEColecao", userRoutes)
 
 
 //rotas de base

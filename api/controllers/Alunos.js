@@ -1,7 +1,7 @@
 import { db } from "../db.js";
 
-export const getLivros = (_, res) => {
-  const q = "SELECT * FROM livro";
+export const getAlunos = (_, res) => {
+  const q = "SELECT * FROM tb_jmf_discente";
 
   db.query(q, (err, data) => {
     if (err) return res.json(err);
@@ -11,9 +11,9 @@ export const getLivros = (_, res) => {
 };
 
 
-export const addLivros = (req, res) => {
+export const addAlunos = (req, res) => {
   const q =
-    "INSERT INTO livro ( `name`, `ano_de_lancamento`  ,`editora` ,`autor`, `volume`, `qtde` , `cdd`) VALUES(?)";
+    "INSERT INTO tb_jmf_discente ( `name`, `ano_de_lancamento`  ,`editora` ,`id_categoria`,`autor`) VALUES(?)";
 
   const values = [
   
@@ -21,12 +21,8 @@ export const addLivros = (req, res) => {
     req.body.ano_de_lancamento,
  
     req.body.editora,
-
+    req.body.id_categoria,
     req.body.autor,
-    req.body.volume,
-    req.body.qtde,
-    req.body.cdd,
-    // qtde quantidade de exemplares
    
   ];
 
@@ -37,19 +33,17 @@ export const addLivros = (req, res) => {
   });
 };
 
-export const updateLivros = (req, res) => {
+export const updateAlunos = (req, res) => {
   const q =
-    "UPDATE livro SET `name` = ?, `ano_de_lancamento` = ? ,`editora` = ?,`autor` = ? , `volume` = ? ,`qtde` = ? ,`cdd` = ?  WHERE `id` = ?";
+    "UPDATE livro SET `name` = ?, `ano_de_lancamento` = ? ,`editora` = ?,`id_categoria` = ? ,`autor` = ?   WHERE `id` = ?";
 
   const values = [
     req.body.name,
     req.body.ano_de_lancamento,
+  
     req.body.editora,
-    // req.body.id_categoria,
+    req.body.id_categoria,
     req.body.autor,
-    req.body.volume,
-    req.body.qtde,
-    req.body.cdd,
   ];
 
   db.query(q, [...values, req.params.id], (err) => {
@@ -59,7 +53,7 @@ export const updateLivros = (req, res) => {
   });
 };
 
-export const deleteLivros = (req, res) => {
+export const deleteAlunos = (req, res) => {
   const q = "DELETE FROM livro WHERE `id` = ?";
 
   db.query(q, [req.params.id], (err) => {

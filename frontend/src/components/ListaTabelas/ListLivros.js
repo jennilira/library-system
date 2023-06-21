@@ -151,9 +151,11 @@ const ListLivros = ({
               <Th>Nome</Th>
               <Th>ano de lançamento</Th>
            
-              <Th onlyWeb> categoria</Th>
+              <Th onlyWeb> cdd/categoria</Th>
               <Th onlyWeb>autor</Th>
               <Th onlyWeb>editora</Th>
+              <Th onlyWeb>volume</Th>
+              <Th onlyWeb>exemplares</Th>
               <Th></Th>
               <Th></Th>
             </Tr>
@@ -164,10 +166,12 @@ const ListLivros = ({
                 <Td width="30%">{item?.name}</Td>
                 <Td width="20%">{item?.ano_de_lancamento}</Td>
               
-                <Td width="7%">{item?.id_categoria}</Td>
+                <Td width="7%">{item?.cdd}</Td>
                 
                 <Td width="30%">{item?.autor}</Td>
                 <Td width="30%">{item?.editora}</Td>
+                <Td width="30%">{item?.volume}</Td>
+                <Td width="30%">{item?.qtde}</Td>
 
                 <Td alignCenter width="9%">
                   <FiEdit size="20" onClick={() => handleEdit(item)} />
