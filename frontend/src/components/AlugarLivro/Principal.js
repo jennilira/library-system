@@ -95,8 +95,6 @@ const Button = styled.button`
 const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   const ref = useRef();
 
-  const [options, setOptions] = useState([]);
-
   // setLivros={setLivros}
   // onEditLivros={onEditLivros}
   // setOnEditLivros={setOnEditLivros}
@@ -123,12 +121,14 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
         const res = await axios.get("http://localhost:8800/turmas");
         // setTurmaData([])
         setTurmaData(res?.data?.sort((a, b) => (a.name > b.name ? 1 : -1)));
-        console.log(turmaData);
+        // console.log(turmaData);
+        // console.log(turmaData);
       } catch (error) {
         // toast.error(error);
         // setEroos(res)
       }
     };
+
     getTurmas();
   }, []);
 
@@ -145,6 +145,7 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
         // toast.error(error);
       }
     };
+
     getLivros();
   }, []);
 
@@ -162,47 +163,39 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const livro = ref.current;
+    const emprestimo = ref.current;
 
-    if (
-      !livro.name.value ||
-      !livro.ano_de_lancamento.value ||
-      !livro.quan_copias.value ||
-      !livro.editora.value ||
-      !livro.id_categoria.value
-    ) {
+    if (!emprestimo || !emprestimo.id_aluno || !emprestimo.data_alugou || !emprestimo.data_devolucao) {
       return toast.warn("Preencha todos os campos!");
     }
-
     if (onEditLivros) {
       await axios
         .put("http://localhost:8800/" + onEditLivros.id, {
-          name: livro.name.value,
-          ano_de_lancamento: livro.ano_de_lancamento.value,
-          quan_copias: livro.quan_copias.value,
-          editora: livro.editora.value,
-          id_categoria: livro.id_categoria.value,
+          id_aluno: emprestimo.id_aluno.value,
+        
+          data_alugou: emprestimo.data_alugou.value,
+          data_devolucao: emprestimo.data_devolucao.value,
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
     } else {
       await axios
         .post("http://localhost:8800/addlivros", {
-          name: livro.name.value,
-          ano_de_lancamento: livro.ano_de_lancamento.value,
-          quan_copias: livro.quan_copias.value,
-          editora: livro.editora.value,
-          id_categoria: livro.id_categoria.value,
+          id_aluno: emprestimo.id_aluno.value,
+          data_alugou: emprestimo.data_alugou.value,
+          data_devolucao: emprestimo.data_devolucao.value,
+          colecao_id: emprestimo.colecao_id.value,
+        
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
+        
     }
 
-    livro.name.value = "";
-    livro.ano_de_lancamento.value = "";
-    livro.quan_copias.value = "";
-    livro.editora.value = "";
-    livro.id_categoria.value = "";
+    emprestimo.id_aluno.value = "";
+    emprestimo.data_alugou.value = "";
+    emprestimo.data_devolucao.value = "";
+  
 
     setOnEditLivros(null);
     getLivros();
@@ -213,6 +206,8 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
 
   const [selectedTurma, setSelectedTurma] = useState("");
   const [filteredAlunoData, setFilteredAlunoData] = useState([]);
+  const [selectedAluno, setSelectedAluno] = useState("");
+  // const [alunos, setAlunos] = useState([]);
 
   const searchLivros = useMemo(() => {
     return livros?.filter((livro, i) => {
@@ -220,18 +215,48 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
     });
   }, [livros, inputSearch]);
 
-  
-
-  const handleTurmaChange = (e) => {
+  const handleTurmaChange = async (e) => {
     const turmaSelecionada = e.target.value;
-
-    // Filtra os alunos com base na turma selecionada
-    const filtered = turmaData.filter(item => item.turma_id === turmaSelecionada);
-    setFilteredAlunoData(filtered);
+    console.log("Turma selecionada:", turmaSelecionada);
 
     setSelectedTurma(turmaSelecionada); // Atualiza a turma selecionada no estado
+
+    try {
+  
+      const response = await axios.get("http://localhost:8800/getalunos");
+      const alunos = response.data;
+      console.log(response.data);
+
+      if (turmaSelecionada) {
+       
+        const filtered = alunos.filter(
+          (aluno) => aluno.discente_idTurma.toString() === turmaSelecionada
+        );
+        console.log("Alunos filtrados:", filtered);
+
+        setFilteredAlunoData(filtered);
+      } else {
+       
+        setFilteredAlunoData([]);
+      }
+    } catch (error) {
+      console.error(error);
+      // Lida com erros de requisição, se necessário
+    }
+
+    console.log(filteredAlunoData);
+    console.log(filteredAlunoData);
+  };
+  const handleAlunoSelecionadoChange = (e) => {
+    const alunoSelecionado = e.target.value;
+    console.log("Aluno selecionado:", alunoSelecionado);
+
+ 
+    setSelectedAluno(alunoSelecionado);
   };
 
+ 
+//entao nao preciso interir a quantidade,,,pq eu posso fazer um filter para saber quantos exemplares tem 
   return (
     // eslint-disable-next-line react/style-prop-object
     <div className="margin-top">
@@ -258,10 +283,10 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
                       setModalSearch(false);
                     }}
                   >
-                    {livro?.name}
+                    {livro?.name} - volume: {livro?.volume}
                   </option>
                 ))}
-                {/* i = index ou seja posiçao */}
+       
               </div>
             ) : (
               ""
@@ -276,12 +301,12 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
             <Label> data prazo </Label>
             <Input type="date" name="data_prazo" />
           </InputArea>
+
+          
           <InputArea>
-            <Label> Turma </Label>
-            <select
-              value={selectedTurma}
-              onChange={handleTurmaChange}
-            >
+            <Label> Selecionar Turma </Label>
+            <InputArea></InputArea>
+            <select value={selectedTurma} onChange={handleTurmaChange}>
               <option value="">Selecione uma turma</option>
               {turmaData?.map((turma) => (
                 <option key={turma?.turma_id} value={turma?.turma_idCurso}>
@@ -290,29 +315,21 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
                 </option>
               ))}
             </select>
-            {/* <button onClick={handleFilter}>Filtrar</button> */}
-
-            <ul>
-        {filteredAlunoData.map(aluno => (
-          <li key={aluno.id_aluno}>{aluno.nome_aluno}</li>
-        ))}
-      </ul>
+            
           </InputArea>
 
           <InputArea>
-            <Label> nome </Label>
-            <Input for="for" type="text" name="nome_aluno" />
-          </InputArea>
-
-          {/* <div className="InputArea">
-            <Label> Selecione status</Label>
-            <select onChange={onOptionChangeHandler} className="form">
-              <option>Please choose one option</option>
-              {options?.length > 0
-                ? options?.map((item, i) => <option>{item?.name}</option>)
-                : ""}
+            <Label> Selecionar Aluno </Label>
+            <InputArea></InputArea>
+            <select onChange={handleAlunoSelecionadoChange}>
+              <option value="">Selecione um aluno</option>
+              {filteredAlunoData.map((aluno) => (
+                <option key={aluno.id_aluno} value={aluno.id_aluno}>
+                  {aluno.discente_nome}
+                </option>
+              ))}
             </select>
-          </div> */}
+          </InputArea>
 
           <Button type="submit">SALVAR</Button>
         </FormContainer>
@@ -321,6 +338,6 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   );
 };
 
-//bem preciso  um filter
+
 export default CadastrarLivros;
-//filtro de aluno == turma selecionada
+

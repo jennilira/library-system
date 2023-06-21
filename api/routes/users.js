@@ -15,6 +15,9 @@ import {
 import { addCatego, deleteCatego, getCatego, updateCatego } from "../controllers/categoriaLivro.js";
 import { addLivros, deleteLivros, getLivros, updateLivros } from "../controllers/livros.js";
 import { getTurmas } from "../controllers/Turma.js";
+import { addAlunos, deleteAlunos, getAlunos, updateAlunos } from "../controllers/Alunos.js";
+import { addAlugarlivro, deleteAlugarlivro, getAlugarlivro, updateAlugarlivro } from "../controllers/AlugarLivro.js";
+import { addLivrocolecao, deleteLivrocolecao, getLivroEColecao, getLivrocolecao, updateLivrocolecao } from "../controllers/colecaoLivro.js";
 const router = express.Router();
 
 router.get("/getadm", getAdmin);
@@ -60,6 +63,32 @@ router.delete("/livros/:id", deleteLivros);
 //turmas
 router.get("/turmas", getTurmas);
 
+//Alunos
+
+router.get("/getalunos", getAlunos);
+router.post("/addAlunos", addAlunos);
+
+router.put("/alunos/:id", updateAlunos);
+
+router.delete("/alunos/:id", deleteAlunos);
+
+
+//emprestimo / alugarlivro
+
+router.get("/getemprestimo", getAlugarlivro);
+router.post("/addemprestimo", addAlugarlivro);
+router.put("/emprestimo/:id", updateAlugarlivro);
+router.delete("/emprestimo/:id", deleteAlugarlivro);
+
+
+
+//exemplar /Livrocolecao
+router.get("/getcolecao", getLivrocolecao);
+router.post("/addcolecao", addLivrocolecao);
+router.put("/colecao/:id", updateLivrocolecao);
+router.delete("/colecao/:id", deleteLivrocolecao);
+router.put("/putLivroEColecao/:id", putLivroEColecao);
+router.get("/getLivroEColecao/:id", getLivroEColecao);
 
 //aqui estao todas as rotas 
 
