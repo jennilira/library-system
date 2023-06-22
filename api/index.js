@@ -20,8 +20,9 @@ app.use("/getalunos", userRoutes)
 app.use("/getemprestimo", userRoutes)
 app.use("/getcolecao", userRoutes)
 app.use("/colecao", userRoutes)
-app.use("/putLivroEColecao", userRoutes)
 app.use("/getLivroEColecao", userRoutes)
+app.use("/getLivroEColecaoByid", userRoutes)
+app.use("/getColecaoBylivroid", userRoutes)
 
 
 //rotas de base

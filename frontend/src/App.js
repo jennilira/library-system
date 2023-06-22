@@ -21,6 +21,9 @@ import Principal from "./components/AlugarLivro/Principal";
 import ListLivros from "./components/ListaTabelas/ListLivros";
 import ListCategoria from "./components/ListaTabelas/listarCategorias";
 import AddAdmin from "./pages/RegistroAdm/Addadmin";
+import AddColecao from "./components/addcolecao/addcolecao";
+import Listarlivrosalugados from "./components/ListaTabelas/Listarlivrosalugado";
+import ListarlivroAtrasados from "./components/ListaTabelas/ListarAtrasados";
 
 // import api from "../../api"
 
@@ -29,6 +32,12 @@ import AddAdmin from "./pages/RegistroAdm/Addadmin";
 function App() {
   const [users, setUsers] = useState([]);
   const [onEdit, setOnEdit] = useState(null);
+
+  const [alugarlivro, setalugarlivro] = useState([]);
+  const [onEditalugarlivro, setOnEditalugarlivro] = useState(null);
+
+  const [colecaoLivro, setcolecaoLivro] = useState([]);
+  const [onEditcolecaoLivro, setOnEditcolecaoLivro] = useState(null);
 
   const [Admin, setAdmin] = useState([]);
   const [onEditAdmin, setOnEditAdmin] = useState(null);
@@ -47,14 +56,19 @@ function App() {
     } catch (error) {
       // toast.error(error);
     }
-
-    console.log(getUsers);
   };
 
-  useEffect(() => {
-    getUsers();
-  }, [setUsers]);
+  const getColecaoLivro = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/getcolecao");
+      console.log(res?.data)
+      setcolecaoLivro(res?.data);
+    } catch (error) {
+      // toast.error(error);
+    }
+  };
 
+ 
   const getAdmin = async () => {
     try {
       const res = await axios.get("http://localhost:8800");
@@ -62,13 +76,12 @@ function App() {
     } catch (error) {
       // toast.error(error);
     }
-
-    console.log(getAdmin);
   };
 
   useEffect(() => {
     getAdmin();
-  }, [setAdmin]);
+    getColecaoLivro()
+  }, []);
 
   //livros uu
   const getLivros = async () => {
@@ -82,7 +95,21 @@ function App() {
 
   useEffect(() => {
     getLivros();
-  }, [setLivros]);
+  }, []);
+
+
+  const getLivroalugado = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/getemprestimo");
+      setalugarlivro(res?.data);
+    } catch (error) {
+      // toast.error(error);
+    }
+  };
+  useEffect(() => {
+    getLivroalugado();
+  }, []);
+
 
   const getCategoria = async () => {
     try {
@@ -91,12 +118,11 @@ function App() {
     } catch (error) {
       // toast.error(error);
     }
-    console.log(getCategoria);
   };
 
   useEffect(() => {
     getCategoria();
-  }, [setcategoria]);
+  }, []);
 
   return (
     <>
@@ -137,11 +163,19 @@ function App() {
           path="/addlivro"
           element={
             <CadastrarLivros
+              colecaoLivro={colecaoLivro}
               livros={livros}
               setLivros={setLivros}
               onEditLivros={onEditLivros}
               setOnEditLivros={setOnEditLivros}
               getLivros={getLivros}
+
+
+             
+              setcolecaoLivro={setcolecaoLivro}
+              onEditcolecaoLivro={onEditcolecaoLivro}
+              setOnEditcolecaoLivro={setOnEditcolecaoLivro}
+              getColecaoLivro={getColecaoLivro}
             />
           }
         />
@@ -166,11 +200,28 @@ function App() {
               onEditcategoria={onEditcategoria}
               setOnEditcategoria={setOnEditcategoria}
               getCategoria={getCategoria}
+              colecaoLivro={colecaoLivro}
             />
           }
         />
-      
-       
+        <Route
+          path="/exemplares"
+          element={
+            <AddColecao
+              colecaoLivro={colecaoLivro}
+              setcolecaoLivro={setcolecaoLivro}
+              onEditcolecaoLivro={onEditcolecaoLivro}
+              setOnEditcolecaoLivro={setOnEditcolecaoLivro}
+              getColecaoLivro={getColecaoLivro}
+              livros={livros}
+              setLivros={setLivros}
+              onEditLivros={onEditLivros}
+              setOnEditLivros={setOnEditLivros}
+              getLivros={getLivros}
+            />
+          }
+        />
+
         <Route
           path="/livros"
           element={
@@ -181,13 +232,40 @@ function App() {
             />
           }
         />
+        {/* <Route
+          path="/livrosalugados"
+          element={
+            <Listarlivrosalugados
+            setalugarlivro={setalugarlivro}
+              
+            
+            alugarlivro={alugarlivro}
+
+              onEditalugarlivro={onEditalugarlivro}
+              setonEditalugarlivro={onEditalugarlivro}
+              
+            />
+          }
+        /> */}
+        <Route
+          path="/livroatrasados"
+          element={
+            <ListarlivroAtrasados
+            setalugarlivro={setalugarlivro}
+              
+            
+            alugarlivro={alugarlivro}
+
+              onEditalugarlivro={onEditalugarlivro}
+              setonEditalugarlivro={onEditalugarlivro}
+              
+            />
+          }
+        />
       </Routes>
 
-    
       <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
-     
-     
-     
+
       <Global />
     </>
   );

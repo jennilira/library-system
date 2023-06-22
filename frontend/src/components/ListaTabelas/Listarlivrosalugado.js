@@ -88,35 +88,42 @@ export const Td = styled.td`
   }
 `;
 
-const ListLivros = ({
+const Listarlivrosalugados = ({
   livros,
   setLivros,
   setOnEditLivros,
   onEditLivros,
   getLivros,
   categoria,
+
+  setalugarlivro,
+  setonEditalugarlivro,
+            
+  alugarlivro,
+
+ onEditalugarlivro,
 }) => {
   const handleEdit = (item) => {
     if (item) {
-      setOnEditLivros(item);
+        setonEditalugarlivro(item);
     }
   };
 
 
   
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (idalugarlivro) => {
     await axios
-      .delete("http://localhost:8800/livros/" + id)
+      .delete("http://localhost:8800/emprestimo/" + idalugarlivro)
       .then(({ data }) => {
-        const newArray = livros?.filter((livro) => livro.id !== id);
+        const newArray = alugarlivro?.filter((alugarlivro) => alugarlivro.id !== idalugarlivro);
 
-        setLivros(newArray);
+        setalugarlivro(newArray);
         toast.success(data);
       })
       .catch(({ data }) => toast.error(data));
 
-    setOnEditLivros(null);
+    // setonEditalugarlivro(null);
   };
 
   //   useEffect(() => {
@@ -151,38 +158,34 @@ const ListLivros = ({
         <Table>
           <Thead>
             <Tr>
-              <Th>Nome</Th>
-              <Th>ano de lançamento</Th>
-           
-              <Th onlyWeb> cdd/categoria</Th>
-              <Th onlyWeb>autor</Th>
-              <Th onlyWeb>editora</Th>
-              <Th onlyWeb>volume</Th>
+              
+              <Th onlyWeb>id_aluno</Th>
+              <Th onlyWeb>exemplar</Th>
+              <Th onlyWeb>data quealugou</Th>
+              <Th onlyWeb>data devolução</Th>
               {/* <Th onlyWeb>exemplares</Th> */}
               <Th></Th>
-              <Th></Th>
+              {/* <Th></Th> */}
             </Tr>
           </Thead>
           <Tbody>
-            {livros?.map((item, i) => (
+            {alugarlivro?.map((item, i) => (
               <Tr key={i}>
-                <Td width="30%">{item?.name}</Td>
-                <Td width="20%">{item?.ano_de_lancamento}</Td>
+               
+                <Td width="20%">{item?.id_aluno}</Td>
+                <Td width="20%">{item?.colecao_id}</Td>
               
-                <Td width="7%">{item?.cdd}</Td>
-                
-                <Td width="30%">{item?.autor}</Td>
-                <Td width="30%">{item?.editora}</Td>
-                <Td width="30%">{item?.volume}</Td>
+                <Td width="30%">{item?.data_alugou}</Td>
+                <Td width="30%">{item?.data_devolucao}</Td>
                 {/* <Td width="30%">{item?.qtde}</Td> */}
 
-                <Td alignCenter width="9%">
+                {/* <Td alignCenter width="9%">
                   <FiEdit size="20" onClick={() => handleEdit(item)} />
-                </Td>
+                </Td> */}
                 <Td alignCenter width="9%">
                   <RiDeleteBin6Line
                     size="20"
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item.idalugarlivro)}
                   />
                 </Td>
               </Tr>
@@ -194,4 +197,4 @@ const ListLivros = ({
   );
 };
 
-export default ListLivros;
+export default Listarlivrosalugados;

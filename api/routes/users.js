@@ -17,7 +17,7 @@ import { addLivros, deleteLivros, getLivros, updateLivros } from "../controllers
 import { getTurmas } from "../controllers/Turma.js";
 import { addAlunos, deleteAlunos, getAlunos, updateAlunos } from "../controllers/Alunos.js";
 import { addAlugarlivro, deleteAlugarlivro, getAlugarlivro, updateAlugarlivro } from "../controllers/AlugarLivro.js";
-import { addLivrocolecao, deleteLivrocolecao, getLivroEColecao, getLivrocolecao, updateLivrocolecao } from "../controllers/colecaoLivro.js";
+import { addLivrocolecao, deleteLivrocolecao, getColecaoBylivroid, getLivroEColecao, getLivroEColecaoByid, getLivrocolecao, updateLivrocolecao } from "../controllers/colecaoLivro.js";
 const router = express.Router();
 
 router.get("/getadm", getAdmin);
@@ -87,8 +87,10 @@ router.get("/getcolecao", getLivrocolecao);
 router.post("/addcolecao", addLivrocolecao);
 router.put("/colecao/:id", updateLivrocolecao);
 router.delete("/colecao/:id", deleteLivrocolecao);
-router.put("/putLivroEColecao/:id", putLivroEColecao);
+
 router.get("/getLivroEColecao/:id", getLivroEColecao);
+router.get("/getLivroEColecaoByid/:id", getLivroEColecaoByid);
+router.get("/getColecaoBylivroid/:id", getColecaoBylivroid);
 
 //aqui estao todas as rotas 
 

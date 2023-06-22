@@ -19,6 +19,27 @@ export const getLivroEColecao = (_, res) => {
     return res.status(200).json(data);
   });
 };
+export const getLivroEColecaoByid = (req, res) => {
+  const q = " SELECT * FROM livrocolecao WHERE `id_colecao` = ?";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+
+    return res.status(200).json(data);
+  });
+};
+
+
+export const getColecaoBylivroid = (req, res) => {
+  const q = " SELECT * FROM livrocolecao WHERE `livro_id` = ?";
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+
+    return res.status(200).json(data);
+  });
+};
+
 export const putLivroEColecao = (_, res) => {
   const q = "SELECT livros.id, livros.name, livros.ano_de_lancamento, livros.editora, livros.autor, livros.volume, livros.qtde, livros.cdd, livrocolecao.id_colecao, livrocolecao.status FROM livros INNER JOIN livrocolecao ON livros.id = livrocolecao.livro_id ";
 

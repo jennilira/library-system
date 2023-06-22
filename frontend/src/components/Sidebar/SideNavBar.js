@@ -30,22 +30,32 @@ const Sidebar = () => {
       icon: <BiBook className="icons" />,
       path: "/livros",
     },
+    // {
+    //   text: "exemplares",
+    //   icon: <BiBook className="icons" />,
+    //   path: "/exemplares",
+    // },
+    // {
+    //   text: "livros alugados",
+    //   icon: <AiOutlineException className="icons" />,
+    //   path: "/livrosalugados",
+    // },
     {
-      text: "livros atrasados",
+      text: "livros alugados",
       icon: <AiOutlineException className="icons" />,
       path: "/livroatrasados",
     },
 
-    {
-      text: "importar livros",
-      icon: <TbFileExport className="icons" />,
-      path: "/importarlivros",
-    },
-    {
-      text: "Nova Categoria",
-      icon: <VscNewFile className="icons" />,
-      path: "/categoria",
-    },
+    // {
+    //   text: "importar livros",
+    //   icon: <TbFileExport className="icons" />,
+    //   path: "/importarlivros",
+    // },
+    // {
+    //   text: "Nova Categoria",
+    //   icon: <VscNewFile className="icons" />,
+    //   path: "/categoria",
+    // },
 
     {
       text: "novo administrador ",

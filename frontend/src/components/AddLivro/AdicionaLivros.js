@@ -203,24 +203,24 @@ const CadastrarLivros = ({
     if (onEditLivros) {
 
  
-      const response = await axios.get(`http://localhost:8800/getLivros/${livro.id}`);
-      const livros = response.data;
-      //tenho que pegar o id que esta sendo editado?::
-      console.log(livros)
-      for (const livro of livros) {
-        const response2 = await axios.get(`http://localhost:8800/getcolecao`);
-        const colecao = response2.data;
+      // const response = await axios.get(`http://localhost:8800/getLivros/${livro.id}`);
+      // const livros = response.data;
+      // //tenho que pegar o id que esta sendo editado?::
+      // console.log(livros)
+      // for (const livro of livros) {
+      //   const response2 = await axios.get(`http://localhost:8800/getcolecao`);
+      //   const colecao = response2.data;
       
-        const registrosFiltrados = colecao.filter((item) => item.livro_id === livro.id);
-      console.log(registrosFiltrados)
-        for (const registro of registrosFiltrados) {
-          await axios.put(`http://localhost:8800/colecao/${registro.id}`, {
-            // Coloque aqui as propriedades que deseja atualizar na tabela colecao
-            livro_id: livro.id,
-            status: "disponível",
-          });
-        }
-      }
+      //   const registrosFiltrados = colecao.filter((item) => item.livro_id === livro.id);
+      // console.log(registrosFiltrados)
+      //   for (const registro of registrosFiltrados) {
+      //     await axios.put(`http://localhost:8800/colecao/${registro.id}`, {
+      //       // Coloque aqui as propriedades que deseja atualizar na tabela colecao
+      //       livro_id: livro.id,
+      //       status: "disponível",
+      //     });
+      //   }
+      // }
       
 
       const livroResponse = await axios
@@ -235,48 +235,14 @@ const CadastrarLivros = ({
           autor: livro?.autor?.value,
           cdd: livro?.cdd?.value,
           volume: livro?.volume?.value,
-          qtde: livro?.qtde?.value,
+          // qtde: livro?.qtde?.value,
 
           // qtde: livro?.qtde?.value,
         })
-//         if (livroResponse.status === 200) {
-//           const quantidadeExemplares = parseInt(livro?.qtde?.value);
-
-//           const exemplarPromises = [];
-
-//           const response = await axios.get("http://localhost:8800/getLivros");
-//           const livrosAtualizados = response.data;
-          
-
-// //           const response2 = await axios.get(`http://localhost:8800/getcolecao?id_livro=${livro.id}`);
-// // const colecao = response2.data;
-// console.log(livrosAtualizados);
-// // console.log(colecao)
-
-//           const livrosOrdenados = livrosAtualizados.sort((a, b) => b.id - a.id);
-//           const ultimoLivroAdicionado = livrosOrdenados[0];
-//           const livroId = ultimoLivroAdicionado.id;
-
-//           for (let i = 0; i < quantidadeExemplares; i++) {
-//             exemplarPromises.push(
-//               axios.put("http://localhost:8800/colecao/", {
-//                 // livro_id: livroResponse.data.id,
-//                 livro_id: livroId,
-//                 status: "disponível",
-//               })
-//             );
-//           }
-
-//              // Executar todas as chamadas de API em paralelo
-//              const exemplarResponses = await Promise.all(exemplarPromises);
-
-//              // Verificar se todos os exemplares foram inseridos com sucesso
-//              const exemplaresInseridos = exemplarResponses.every(
-//                (response) => response.status === 200
-//              );
-//         }
-        // .then(({ data }) => toast.success(data))
-        // .catch(({ data }) => toast.error(data));
+//       
+        .then(({ data }) => toast.success(data))
+        .catch(({ data }) => toast.error(data) &&   toast.error("Ocorreu um erro ao cadastrar o livro.")) ;
+      
       console.log(error);
     } else {
       try {

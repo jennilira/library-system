@@ -12,12 +12,15 @@ export const getAlugarlivro = (_, res) => {
 
 export const addAlugarlivro = (req, res) => {
   const q =
-    "INSERT INTO alugarlivro ( `data_alugou`, `id_aluno`  ,`data_devolucao` ) VALUES(?)";
+    "INSERT INTO alugarlivro ( `id_aluno`  ,`data_devolucao` , `data_alugou`,`turma_id` , `colecao_id`) VALUES(?)";
 
   const values = [
-    req.body.data_alugou,
     req.body.id_aluno,
+    req.body.data_alugou,
+   
     req.body.data_devolucao,
+    req.body.turma_id,
+    req.body.colecao_id,
   ];
 
   db.query(q, [values], (err) => {
@@ -35,7 +38,8 @@ export const updateAlugarlivro = (req, res) => {
     req.body.data_alugou,
     req.body.id_aluno,
     req.body.data_devolucao,
-    req.body.data_devolucao,
+    req.body.turma_id,
+    req.body.colecao_id,
   ];
 
   db.query(q, [...values, req.params.id], (err) => {
@@ -46,7 +50,7 @@ export const updateAlugarlivro = (req, res) => {
 };
 
 export const deleteAlugarlivro = (req, res) => {
-  const q = "DELETE FROM alugarlivro WHERE `id` = ?";
+  const q = "DELETE FROM alugarlivro WHERE `idalugarlivro` = ?";
 
   db.query(q, [req.params.id], (err) => {
     if (err) return res.json(err);

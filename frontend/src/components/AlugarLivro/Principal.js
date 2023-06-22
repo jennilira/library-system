@@ -92,8 +92,17 @@ const Button = styled.button`
 //aquiiiiiiiiiii
 //{ getCategorias, onEdit, setOnEdit }
 
-const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
-  const ref = useRef();
+const CadastrarLivros = ({
+  getLivros,
+  onEditLivros,
+  setOnEditLivros,
+  colecaoLivro,
+  setcolecaoLivro,
+  onEditcolecaoLivro,
+  setOnEditcolecaoLivro,
+  getColecaoLivro,
+}) => {
+  const ref = useRef(); //negocio do form
 
   // setLivros={setLivros}
   // onEditLivros={onEditLivros}
@@ -115,6 +124,8 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
 
   const [turmaData, setTurmaData] = useState([]);
   const [erros, setEroos] = useState("");
+  const [idColecao, setIdColecao] = useState(null);
+
   useEffect(() => {
     const getTurmas = async () => {
       try {
@@ -140,7 +151,6 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
       try {
         const res = await axios.get("http://localhost:8800/getlivros");
         setLivros(res?.data?.sort((a, b) => (a.name > b.name ? 1 : -1)));
-        console.log(livros);
       } catch (error) {
         // toast.error(error);
       }
@@ -152,53 +162,87 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   const onOptionChangeHandler = (event) => {
     console.log("User Selected Value - ", event.target.value);
   };
-
-  //useEffect para fazer o cadastro do livro
+  const [selectedAluno, setSelectedAluno] = useState("");
   useEffect(() => {
-    if (onEditLivros) {
+    if (onEditcolecaoLivro) {
       const livro = ref.current;
     }
-  }, [onEditLivros]);
+  }, [onEditcolecaoLivro]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const emprestimo = ref.current;
 
-    if (!emprestimo || !emprestimo.id_aluno || !emprestimo.data_alugou || !emprestimo.data_devolucao) {
-      return toast.warn("Preencha todos os campos!");
-    }
-    if (onEditLivros) {
+    const turmaSelecionada = selectedTurma;
+
+    const formData = {
+      id_aluno: selectedAluno,
+      data_alugou: emprestimo.data_alugou.value,
+      data_devolucao: emprestimo.data_devolucao.value,
+      colecao_id: idColecao,
+      turma_id: turmaSelecionada,
+    };
+    // if (
+    //   !emprestimo ||
+    //   !emprestimo.id_aluno ||
+    //   !emprestimo.data_alugou ||
+    //   !emprestimo.data_devolucao ||
+    //   !emprestimo.colecao_id ||
+    //   !emprestimo.turma_id
+    // ) {
+    //   return toast.warn("Preencha todos os campos!");
+    // }
+    if (onEditcolecaoLivro) {
       await axios
-        .put("http://localhost:8800/" + onEditLivros.id, {
-          id_aluno: emprestimo.id_aluno.value,
-        
-          data_alugou: emprestimo.data_alugou.value,
+        .put("http://localhost:8800/" + onEditcolecaoLivro.id, {
+          // id_aluno: emprestimo.id_aluno.value,
+          // data_alugou: emprestimo.data_alugou.value,
+          // data_devolucao: emprestimo.data_devolucao.value,
+          // colecao_id: emprestimo.colecao_id.value,
+          // turma_id: emprestimo.turma_id.value,
+          id_aluno: emprestimo.selectedAluno,
+          data_alugou: new Date(),
           data_devolucao: emprestimo.data_devolucao.value,
+          colecao_id: emprestimo.idColecao,
+          turma_id: emprestimo.turmaSelecionada,
         })
         .then(({ data }) => toast.success(data))
         .catch(({ data }) => toast.error(data));
     } else {
-      await axios
-        .post("http://localhost:8800/addlivros", {
-          id_aluno: emprestimo.id_aluno.value,
-          data_alugou: emprestimo.data_alugou.value,
-          data_devolucao: emprestimo.data_devolucao.value,
-          colecao_id: emprestimo.colecao_id.value,
-        
-        })
-        .then(({ data }) => toast.success(data))
-        .catch(({ data }) => toast.error(data));
-        
+      const response = await axios.post(
+        "http://localhost:8800/addemprestimo",
+        formData
+      );
+      toast.success(response.data);
+      if (response.status === 200) {
+        const { data } = response;
+        // toast.success(data);
+
+        emprestimo.id_aluno = "";
+        emprestimo.data_devolucao.value = "";
+        emprestimo.turma_id = "";
+        emprestimo.colecao_id = "";
+
+        // const id_colecaoAtualizado = data.id_colecao;
+        // setIdColecao(id_colecaoAtualizado);
+        // console.log("ID da coleção atualizado:", id_colecaoAtualizado);
+      } else {
+        toast.error("Ocorreu um erro ao adicionar o empréstimo.");
+      }
+      // .then(({ data }) => toast.success(data))
+      // .catch(({ data }) => toast.error(data));
+      console.log(response);
     }
 
-    emprestimo.id_aluno.value = "";
-    emprestimo.data_alugou.value = "";
-    emprestimo.data_devolucao.value = "";
-  
+    // emprestimo.id_aluno = "";
+    // emprestimo.data_alugou.value = "";
+    // emprestimo.data_devolucao.value = "";
+    // emprestimo.turma_id = "";
+    // emprestimo.colecao_id = "";
 
-    setOnEditLivros(null);
-    getLivros();
+    // setOnEditcolecaoLivro(null);
+    // getLivros();
   };
 
   const [inputSearch, setInputSearch] = useState("");
@@ -206,9 +250,8 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
 
   const [selectedTurma, setSelectedTurma] = useState("");
   const [filteredAlunoData, setFilteredAlunoData] = useState([]);
-  const [selectedAluno, setSelectedAluno] = useState("");
-  // const [alunos, setAlunos] = useState([]);
 
+  // const [alunos, setAlunos] = useState([]);
   const searchLivros = useMemo(() => {
     return livros?.filter((livro, i) => {
       return livro?.name?.toLowerCase()?.includes(inputSearch?.toLowerCase());
@@ -220,15 +263,12 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
     console.log("Turma selecionada:", turmaSelecionada);
 
     setSelectedTurma(turmaSelecionada); // Atualiza a turma selecionada no estado
-
     try {
-  
       const response = await axios.get("http://localhost:8800/getalunos");
       const alunos = response.data;
       console.log(response.data);
 
       if (turmaSelecionada) {
-       
         const filtered = alunos.filter(
           (aluno) => aluno.discente_idTurma.toString() === turmaSelecionada
         );
@@ -236,29 +276,52 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
 
         setFilteredAlunoData(filtered);
       } else {
-       
         setFilteredAlunoData([]);
       }
     } catch (error) {
       console.error(error);
       // Lida com erros de requisição, se necessário
     }
-
-    console.log(filteredAlunoData);
-    console.log(filteredAlunoData);
   };
-  const handleAlunoSelecionadoChange = (e) => {
-    const alunoSelecionado = e.target.value;
+
+  // const handleAlunoSelecionadoChange = (e) => {
+  //   const alunoSelecionado = e.target.value;
+  //   console.log("Aluno selecionado:", alunoSelecionado);
+  //   console.log( alunoSelecionado);
+
+  //   setSelectedAluno(alunoSelecionado);
+  //   console.log(selectedAluno)
+
+  // };
+
+
+
+  const handleAlunoSelecionadoChange = (alunoSelecionado) => {
     console.log("Aluno selecionado:", alunoSelecionado);
 
- 
     setSelectedAluno(alunoSelecionado);
+    console.log(selectedAluno);
   };
 
- 
-//entao nao preciso interir a quantidade,,,pq eu posso fazer um filter para saber quantos exemplares tem 
+  useEffect(() => {
+    console.log("Aluno selecionado mesmo:", selectedAluno);
+    console.log("Aluno selecionado coleçao:", idColecao);
+    
+  }, [selectedAluno]);
+
+  const filtroLivro = (livroId) => {
+    if (colecaoLivro?.length > 0) {
+      const colecaoFiltrada = colecaoLivro?.filter(
+        (s) => s?.livro_id === livroId
+      );
+
+      const livroSelecionado = colecaoFiltrada[0];
+      setIdColecao(livroSelecionado?.id_colecao);
+      setModalSearch(false);
+    }
+  };
+
   return (
-    // eslint-disable-next-line react/style-prop-object
     <div className="margin-top">
       <Container>
         <FormContainer ref={ref} onSubmit={handleSubmit} className="">
@@ -280,13 +343,13 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
                   <option
                     onClick={() => {
                       setInputSearch(livro?.name);
+                      filtroLivro(livro?.id);
                       setModalSearch(false);
                     }}
                   >
                     {livro?.name} - volume: {livro?.volume}
                   </option>
                 ))}
-       
               </div>
             ) : (
               ""
@@ -295,33 +358,33 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
 
           <InputArea>
             <Label> data de hoje </Label>
-            <Input type="date" name="data_prazo" />
+            <Input type="text" name="data_alugou" />
           </InputArea>
           <InputArea>
             <Label> data prazo </Label>
-            <Input type="date" name="data_prazo" />
+            <Input type="text" name="data_devolucao" />
           </InputArea>
 
-          
           <InputArea>
             <Label> Selecionar Turma </Label>
             <InputArea></InputArea>
             <select value={selectedTurma} onChange={handleTurmaChange}>
               <option value="">Selecione uma turma</option>
               {turmaData?.map((turma) => (
-                <option key={turma?.turma_id} value={turma?.turma_idCurso}>
-                  {console.log(turma)}
+                <option key={turma?.turma_id} value={turma?.turma_id}>
+                  {/* {console.log(turma)} */}
                   {turma?.turma_nome} - {turma?.turma_serie}
                 </option>
               ))}
             </select>
-            
           </InputArea>
 
           <InputArea>
             <Label> Selecionar Aluno </Label>
             <InputArea></InputArea>
-            <select onChange={handleAlunoSelecionadoChange}>
+            <select
+              onChange={(e) => handleAlunoSelecionadoChange(e.target.value)}
+            >
               <option value="">Selecione um aluno</option>
               {filteredAlunoData.map((aluno) => (
                 <option key={aluno.id_aluno} value={aluno.id_aluno}>
@@ -338,6 +401,4 @@ const CadastrarLivros = (getLivros, onEditLivros, setOnEditLivros) => {
   );
 };
 
-
 export default CadastrarLivros;
-
